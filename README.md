@@ -1,119 +1,94 @@
 # Clinical Text Mining for Disease Prediction
 
-A natural language processing and machine learning project focused on extracting disease-relevant information from clinical text and exploring its use for disease prediction.
+A Natural Language Processing (NLP) and machine-learning project exploring the classification of clinical transcriptions into medical specialties using TF-IDF feature extraction and Logistic Regression.
 
 ## Project Overview
 
-Clinical records contain valuable information in the form of unstructured text. This project applies natural language processing and machine learning techniques to clinical text to identify patterns that can support disease prediction.
+Clinical documents contain valuable information about symptoms, diagnoses, medical history, and treatment. This project explores how NLP and supervised machine learning can process unstructured medical transcription text and automatically classify it by medical specialty.
 
-The project uses the **Medical Transcriptions (`mtsamples`) dataset** containing clinical transcription data from different medical specialties.
-
-## Objectives
-
-* Process and analyze unstructured clinical text.
-* Extract meaningful features from medical narratives.
-* Apply machine learning techniques for disease prediction.
-* Explore NLP as a computational approach for healthcare applications.
+**Note:** The current implementation predicts medical specialties, not individual disease diagnoses.
 
 ## Dataset
 
-The project uses the **Medical Transcriptions (`mtsamples`) dataset**.
+- **Dataset:** Medical Transcriptions (MTSamples)
+- **Source:** [Kaggle — Medical Transcriptions](https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions)
+- **Input:** Clinical transcription text
+- **Target:** Medical specialty
 
-Relevant fields include:
-
-* `description`
-* `medical_specialty`
-* `sample_name`
-* `transcription`
-* `keywords`
-
-The `transcription` field provides the primary clinical text used for NLP analysis.
+The notebook identifies the transcription and specialty columns and standardizes them for processing.
 
 ## Methodology
 
-The project follows an NLP and machine-learning pipeline:
-
-```text
-Clinical Transcriptions
-          ↓
-Text Preprocessing
-          ↓
-Feature Extraction
-          ↓
-TF-IDF Representation
-          ↓
-Train-Test Split
-          ↓
-Machine Learning Classifier
-          ↓
-Disease Prediction
-          ↓
-Performance Evaluation
-```
-
-### Text Processing
-
-The clinical text is prepared for machine-learning analysis through natural language preprocessing.
-
-### Feature Extraction
-
-**TF-IDF (Term Frequency–Inverse Document Frequency)** is used to convert clinical text into numerical feature representations.
-
-Both unigram and bigram features are considered to capture individual medical terms as well as combinations of terms.
-
-### Machine Learning
-
-A **Logistic Regression** classifier is used for the prediction task.
+1. **Data loading:** Load the CSV dataset using Pandas.
+2. **Text preprocessing:** Convert text to lowercase, tokenize, lemmatize, and remove stop words and non-alphabetic tokens using spaCy.
+3. **Feature extraction:** Convert cleaned text into TF-IDF features, with `max_features=5000` and `ngram_range=(1,2)`.
+4. **Data splitting:** Use a stratified 70:30 training-test split.
+5. **Model training:** Train a Logistic Regression classifier with `max_iter=500`.
+6. **Evaluation:** Generate a classification report and confusion matrix.
+7. **Prediction and saving:** Demonstrate a prediction on sample text and save the trained model and vectorizer using Joblib.
 
 ## Technologies Used
 
-* Python
-* Pandas
-* NumPy
-* Scikit-learn
-* Natural Language Processing
-* TF-IDF
-* Logistic Regression
-* Google Colab
+- Python
+- Pandas and NumPy
+- spaCy
+- Scikit-learn
+- TF-IDF
+- Logistic Regression
+- Matplotlib and Seaborn
+- Joblib
+- Google Colab
 
-## Project Structure
+## Results
 
-```text
-clinical-text-mining-disease-prediction/
-│
-├── Clinical_Text_Mining_Disease_Prediction.ipynb
-└── README.md
-```
+The saved notebook output reports:
 
-## Applications
+| Metric | Recorded result |
+|---|---:|
+| Test examples | 1,500 |
+| Test accuracy | 28% |
+| Macro F1-score | 0.09 |
+| Weighted F1-score | 0.23 |
 
-Clinical text mining can support healthcare applications such as:
+These are the results recorded in the current notebook, not independently reproduced results. Performance varies across specialties, and some classes have zero precision or recall.
 
-* Automated analysis of clinical narratives
-* Disease-related information extraction
-* Clinical decision-support research
-* Healthcare NLP
-* Data-driven medical research
+## Visualizations
+
+The project includes plots showing the top model-associated words for selected medical specialties. These visualizations help explore which TF-IDF features are influential for individual classes.
+
+Additional model evaluation can be explored through the classification report and confusion matrix generated by the notebook.
 
 ## Limitations
 
-* Clinical text can contain domain-specific terminology and abbreviations.
-* Model performance depends on the quality and distribution of the available clinical data.
-* The project is intended for academic and research purposes and does not provide clinical diagnoses.
+- The dataset contains imbalanced medical-specialty categories.
+- The current model has limited classification performance across many classes.
+- TF-IDF and Logistic Regression may not capture the full context of clinical language.
+- The notebook uses a stratified random split; it does not establish generalization to independent hospitals or datasets.
+- This is an academic project, not a clinically validated diagnostic system.
 
 ## Future Work
 
-Possible extensions include:
+- Address class imbalance using suitable training-only resampling or class weighting.
+- Compare alternative models and tune hyperparameters.
+- Evaluate macro F1-score, per-class recall, and confusion patterns.
+- Compare TF-IDF with biomedical language models such as BioBERT or ClinicalBERT.
+- Evaluate on independent clinical datasets when suitable data are available.
 
-* Experimenting with additional NLP and machine-learning models.
-* Comparing traditional TF-IDF approaches with modern clinical language models.
-* Applying feature selection and hyperparameter optimization.
-* Evaluating the approach on additional clinical datasets.
-* Exploring explainable NLP techniques for healthcare applications.
+## Repository Contents
+
+- `Clinical_Text_Mining_Disease_Prediction.ipynb` — notebook containing the implementation and recorded outputs.
+- `README.md` — project documentation.
+- `top_words_*.png` or a combined visualization PDF — selected specialty visualizations, once uploaded.
+
+## Disclaimer
+
+This project is intended for educational and research purposes only. Its outputs must not be used for medical diagnosis or clinical decision-making.
 
 ## Author
 
-**Lakshita Jain**
-B.Tech. Biomedical Engineering
-SGSITS, Indore
+**Lakshita Jain**  
+B.Tech. Biomedical Engineering  
+Shri G. S. Institute of Technology and Science (SGSITS), Indore
 
+- GitHub: https://github.com/lakshitajain46
+- LinkedIn: https://www.linkedin.com/in/lakshita-jain-143076368/
