@@ -92,3 +92,8 @@ Shri G. S. Institute of Technology and Science (SGSITS), Indore
 
 - GitHub: https://github.com/lakshitajain46
 - LinkedIn: https://www.linkedin.com/in/lakshita-jain-143076368/
+
+## Visualizations
+
+- **Medical Specialty Analysis Graphs:** See [`medical_specialty_analysis_graphs.pdf`](medical_specialty_analysis_graphs.pdf) for the selected specialty graphs.
+- **Confusion Matrix:** Included in the Jupyter notebook under the TF-IDF vectorization and model evaluation workflow. It compares true medical-specialty labels with predicted labels.
