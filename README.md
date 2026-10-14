@@ -96,4 +96,4 @@ Shri G. S. Institute of Technology and Science (SGSITS), Indore
 ## Visualizations
 
 - **Medical Specialty Analysis Graphs:** See [`medical_specialty_analysis_graphs.pdf`](medical_specialty_analysis_graphs.pdf) for the selected specialty graphs.
-- **Confusion Matrix:** Included in the Jupyter notebook under the TF-IDF vectorization and model evaluation workflow. It compares true medical-specialty labels with predicted labels.
+- **Confusion Matrix:** Included in the Colab notebook under the TF-IDF vectorization and model evaluation workflow. It compares true medical-specialty labels with predicted labels.
