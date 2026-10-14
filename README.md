@@ -94,6 +94,9 @@ Shri G. S. Institute of Technology and Science (SGSITS), Indore
 - LinkedIn: https://www.linkedin.com/in/lakshita-jain-143076368/
 
 ## Visualizations
+  
+The selected medical specialty analysis graphs are available in the accompanying PDF:
 
-- **Medical Specialty Analysis Graphs:** See [`medical_specialty_analysis_graphs.pdf`](medical_specialty_analysis_graphs.pdf) for the selected specialty graphs.
-- **Confusion Matrix:** Included in the Colab notebook under the TF-IDF vectorization and model evaluation workflow. It compares true medical-specialty labels with predicted labels.
+[**View Medical Specialty Analysis Graphs (PDF)**](medical_specialty_analysis_graphs.pdf)
+
+The notebook also includes a confusion matrix comparing true and predicted medical specialty labels as part of the model evaluation workflow.
