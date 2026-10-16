@@ -1,100 +1,89 @@
-# Clinical Text Mining for Disease Prediction
+Clinical Text Mining for Medical Specialty Classification
+An academic Natural Language Processing (NLP) and machine-learning project that classifies clinical transcription text into medical specialties using spaCy, TF-IDF feature extraction, and Logistic Regression.
+Important scope note: Despite the original notebook title, the current implementation predicts a medical specialty from a transcription. It does not directly predict or diagnose individual diseases and is not intended for clinical use.
 
-A Natural Language Processing (NLP) and machine-learning project exploring the classification of clinical transcriptions into medical specialties using TF-IDF feature extraction and Logistic Regression.
-
-## Project Overview
-
-Clinical documents contain valuable information about symptoms, diagnoses, medical history, and treatment. This project explores how NLP and supervised machine learning can process unstructured medical transcription text and automatically classify it by medical specialty.
-
-**Note:** The current implementation predicts medical specialties, not individual disease diagnoses.
-
-## Dataset
-
-- **Dataset:** Medical Transcriptions (MTSamples)
-- **Source:** [Kaggle — Medical Transcriptions](https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions)
-- **Input:** Clinical transcription text
-- **Target:** Medical specialty
-
-The notebook identifies the transcription and specialty columns and standardizes them for processing.
-
-## Methodology
-
-1. **Data loading:** Load the CSV dataset using Pandas.
-2. **Text preprocessing:** Convert text to lowercase, tokenize, lemmatize, and remove stop words and non-alphabetic tokens using spaCy.
-3. **Feature extraction:** Convert cleaned text into TF-IDF features using `max_features=5000` and `ngram_range=(1,2)`.
-4. **Data splitting:** Use a stratified 70:30 training-test split.
-5. **Model training:** Train a Logistic Regression classifier with `max_iter=500`.
-6. **Evaluation:** Generate a classification report and confusion matrix.
-7. **Prediction and saving:** Demonstrate a prediction on sample text and save the trained model and vectorizer using Joblib.
-
-## Technologies Used
-
+Project Overview
+Clinical transcriptions contain unstructured text describing patient histories, symptoms, examinations, and clinical findings. This project explores a traditional NLP pipeline for preprocessing transcription text, representing it numerically, and training a supervised classifier to predict the associated medical specialty.
+Dataset
+- Dataset: Medical Transcriptions (MTSamples)
+- Source: Medical Transcriptions dataset on Kaggle
+- Text column used in the notebook: transcription
+- Target column used in the notebook: medical_specialty
+The notebook also attempts to detect alternative text columns (abstract or text) and target columns (label or disease). The CSV is uploaded by the user in Google Colab and is not bundled in this repository. Please check the dataset's terms before using or redistributing it.
+Methodology
+1. Upload and load data: Upload a CSV file in Google Colab and read it with Pandas.
+2. Identify columns: Detect the clinical text and target label columns and standardize them as text and label.
+3. Text preprocessing: Use spaCy's en_core_web_sm model to lowercase the text, lemmatize tokens, and keep alphabetic tokens that are not stop words.
+4. Clean rows: Exclude rows with missing labels or cleaned text and rows whose cleaned text is empty before model training.
+5. Train-test split: Split the cleaned text and labels into 70% training and 30% test data, using random_state=42. Stratification is used when there are at least two classes and every class has at least two examples.
+6. Feature extraction: Use TfidfVectorizer(max_features=5000, ngram_range=(1, 2)). The vectorizer is fitted only on training text; test text is transformed using that fitted vectorizer.
+7. Model training: Train LogisticRegression(max_iter=500).
+8. Evaluation: Calculate accuracy, macro F1-score, weighted F1-score, a per-class classification report, and a confusion matrix on the held-out test set.
+9. Demonstration and interpretation: Run a sample prediction and visualize top model-associated terms by class.
+10. Save artifacts: Save the fitted Logistic Regression model and TF-IDF vectorizer as Joblib files under /mnt/data/artifacts/ in the notebook runtime.
+Technologies Used
 - Python
 - Pandas and NumPy
-- spaCy
+- spaCy (en_core_web_sm)
 - Scikit-learn
 - TF-IDF
 - Logistic Regression
 - Matplotlib and Seaborn
 - Joblib
 - Google Colab
+Results
+The latest saved notebook output reports the following metrics for a held-out test set of 1,500 examples:
+Metric	Result
+Accuracy	0.2793 (27.93%)
+Macro F1-score	0.0906
+Weighted F1-score	0.2360
+Test examples	1,500
 
-## Results
 
-The saved notebook output reports the following results on a test set of 1,500 examples:
-
-| Metric | Recorded result |
-|---|---:|
-| Test examples | 1,500 |
-| Test accuracy | 28% |
-| Macro F1-score | 0.09 |
-| Weighted F1-score | 0.23 |
-
-These results indicate limited classification performance across medical specialties. Some classes have zero precision or recall, highlighting the difficulty of predicting underrepresented or challenging categories.
-
-**Evaluation note:** The current notebook fits the TF-IDF vectorizer before splitting the data into training and test sets. This can introduce data leakage and affect the reported metrics. The results should therefore be treated as preliminary rather than as an independent estimate of model generalization.
-
-## Visualizations
-
-Selected medical specialty analysis graphs are available in the accompanying PDF:
-
-[**View Medical Specialty Analysis Graphs (PDF)**](medical_specialty_analysis_graphs.pdf)
-
-The notebook also generates a classification report and confusion matrix to examine model performance across medical specialties.
-
-## Limitations
-
-- The dataset contains imbalanced medical-specialty categories.
-- The current model has limited classification performance across many classes.
-- TF-IDF and Logistic Regression may not capture the full context of clinical language.
-- The current evaluation workflow may introduce data leakage through TF-IDF feature fitting before the train-test split.
-- A stratified random split does not establish generalization to independent hospitals or datasets.
-- This is an academic project, not a clinically validated diagnostic system.
-
-## Future Work
-
-- Fit the TF-IDF vectorizer on training data only, using a leakage-free evaluation pipeline.
-- Address class imbalance using suitable training-only resampling or class weighting.
-- Compare alternative models and tune hyperparameters.
-- Evaluate macro F1-score, per-class recall, and confusion patterns.
+The classification report shows uneven performance across specialties; several low-support classes have zero precision, recall, or F1-score. These results indicate that the current baseline has limited performance, especially across less-represented classes. Accuracy alone does not capture this uneven performance, so macro F1 and per-class metrics should also be considered.
+These figures are the outputs saved in the uploaded notebook. If you rerun the notebook and the metrics change, update this section to match the latest run.
+Visualizations
+The notebook generates a confusion matrix and plots top model-associated terms for each class. If the following files are present in the repository, they can also be opened directly:
+- [TF-IDF visualization](tf-idf.png)
+- [Medical specialty visualization](medical specialty.png)
+- [Medical specialty analysis graphs (PDF)](medical_specialty_analysis_graphs.pdf)
+How to Run
+The notebook is designed for Google Colab.
+1. Open Clinical_text_mining.ipynb in Google Colab.
+2. Run the installation cell to install the Python packages and download the spaCy English model.
+3. Run the notebook cells in order.
+4. When prompted, upload the MTSamples CSV file.
+5. Review the evaluation metrics and visualizations generated by the notebook.
+For a local Python environment, install the packages listed in requirements.txt, then download the spaCy model:
+python -m pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+The dataset-upload cell uses google.colab.files; for local execution, that cell must be adapted to read a local CSV path. The notebook saves model artifacts to /mnt/data/artifacts/, a path intended for the notebook runtime; those files are not automatically committed to GitHub.
+Repository Contents
+- Clinical_text_mining.ipynb — notebook for data loading, text preprocessing, model training, evaluation, visualization, sample prediction, and artifact saving.
+- README.md — project documentation.
+- requirements.txt — Python package dependencies.
+- tf-idf.png — TF-IDF visualization, if included.
+- medical specialty.png — medical-specialty visualization, if included.
+- medical_specialty_analysis_graphs.pdf — selected specialty-analysis graphs, if included.
+Keep this list synchronized with the files actually present in the repository.
+Limitations
+- The dataset has imbalanced specialty categories, and some classes have very few test examples.
+- The current Logistic Regression baseline has low overall performance and particularly low macro F1-score.
+- TF-IDF represents text through word and phrase weights and may not capture the full context of clinical language.
+- A single random train-test split does not establish generalization to other hospitals, datasets, or patient populations.
+- The sample prediction is a demonstration, not evidence of clinical reliability.
+- Saved model files are written to the notebook runtime and are not automatically included in the GitHub repository.
+Future Work
+- Compare class-weighted Logistic Regression and other suitable baseline classifiers.
+- Investigate class imbalance and inspect per-class errors.
+- Use cross-validation or repeated evaluation splits where appropriate.
 - Compare TF-IDF with biomedical language models such as BioBERT or ClinicalBERT.
-- Evaluate on independent clinical datasets when suitable data are available.
-
-## Repository Contents
-
-- `Clinical_Text_Mining_Disease_Prediction.ipynb` — notebook containing the implementation and recorded outputs.
-- `README.md` — project documentation.
-- `medical_specialty_analysis_graphs.pdf` — selected medical specialty analysis visualizations.
-
-## Disclaimer
-
-This project is intended for educational and research purposes only. Its outputs must not be used for medical diagnosis or clinical decision-making.
-
-## Author
-
-**Lakshita Jain**  
-B.Tech. Biomedical Engineering  
+- Evaluate on an independent dataset before making claims about generalization.
+Disclaimer
+This project is for educational and research purposes only. It is not a clinically validated system, medical device, or diagnostic tool. Its predictions must not be used for medical diagnosis or clinical decision-making.
+Author
+Lakshita Jain
+B.Tech. Biomedical Engineering
 Shri G. S. Institute of Technology and Science (SGSITS), Indore
-
-- GitHub: [lakshitajain46](https://github.com/lakshitajain46)
-- LinkedIn: [Lakshita Jain](https://www.linkedin.com/in/lakshita-jain-143076368/)
+- GitHub: lakshitajain46
+- LinkedIn: Lakshita Jain
